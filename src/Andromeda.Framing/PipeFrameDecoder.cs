@@ -9,7 +9,7 @@ using Andromeda.Framing.Metadata;
 
 namespace Andromeda.Framing
 {
-    internal sealed class PipeFrameDecoder : IFrameDecoder
+    internal class PipeFrameDecoder : IFrameDecoder
     {
         private readonly IMetadataDecoder _decoder;
         private PipeReader _reader;
@@ -38,15 +38,16 @@ namespace Andromeda.Framing
             }
         }
 
-        public void Close(Exception ex = null)
+        public bool Close(Exception ex = null)
         {
             var reader = Interlocked.Exchange(ref _reader, null);
-            if (reader == null) return;
+            if (reader == null) return false;
 
             try { reader.Complete(ex); } catch { /* discarded */ }
             try { reader.CancelPendingRead(); } catch { /* discarded */}
+            return true;
         }
 
-        public void Dispose() => Close();
+        public virtual void Dispose() => Close();
     }
 }

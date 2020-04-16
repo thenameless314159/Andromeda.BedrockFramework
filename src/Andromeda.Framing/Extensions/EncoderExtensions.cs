@@ -1,5 +1,6 @@
 ﻿using System.Buffers;
 using System.IO.Pipelines;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Andromeda.Framing.Metadata;
@@ -8,6 +9,10 @@ namespace Andromeda.Framing.Extensions
 {
     public static class EncoderExtensions
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IFrameEncoder AsFrameEncoder(this IMetadataEncoder encoder, PipeWriter writer, 
+            CancellationToken token = default) => new PipeFrameEncoder(encoder, writer, token);
+
         public static ValueTask<FlushResult> WriteFrameAsync(this IMetadataEncoder encoder, PipeWriter writer, Frame frame, CancellationToken token = default)
         {
             encoder.WriteMetadata(writer, frame);
