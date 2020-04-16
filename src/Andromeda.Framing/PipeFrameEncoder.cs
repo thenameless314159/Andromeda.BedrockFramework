@@ -12,9 +12,16 @@ namespace Andromeda.Framing
     internal class PipeFrameEncoder : IFrameEncoder
     {
         private readonly IMetadataEncoder _metadataEncoder;
-        private readonly SemaphoreSlim _singleWriter;
+        protected readonly SemaphoreSlim _singleWriter;
         protected CancellationToken _token;
         protected PipeWriter _pipeWriter;
+        private long _framesWritten;
+
+        public long FramesWritten
+        {
+            get => Interlocked.Read(ref _framesWritten);
+            protected set => Interlocked.Exchange(ref _framesWritten, value);
+        }
 
         public PipeFrameEncoder(IMetadataEncoder metadataEncoder, PipeWriter writer, CancellationToken token = default)
         {
@@ -38,15 +45,15 @@ namespace Andromeda.Framing
                 release = false;
                 return awaitFlushAndRelease(write);
             }
-            finally { if (release) { _singleWriter.Release(); } }
+            finally { if (release) { Release(); } }
 
             async PooledValueTask awaitFlushAndRelease(ValueTask<FlushResult> flush) {
-                try { await flush; } finally { _singleWriter.Release(); }
+                try { await flush; } finally { Release(); }
             }
             async PooledValueTask sendAsyncSlowPath(Frame frm) {
                 await _singleWriter.WaitAsync(_token).ConfigureAwait(false);
                 try { await _metadataEncoder.WriteFrameAsync(writer, frm, _token).ConfigureAwait(false); }
-                finally { _singleWriter.Release(); }
+                finally { Release(); }
             }
         }
 
@@ -63,7 +70,7 @@ namespace Andromeda.Framing
                         await _metadataEncoder.WriteFrameAsync(writer, frame, _token)
                             .ConfigureAwait(false);
                 } 
-                finally { _singleWriter.Release(); }
+                finally { Release(); }
             }
             async PooledValueTask sendAllSlow() {
                 await _singleWriter.WaitAsync(_token).ConfigureAwait(false);
@@ -81,17 +88,25 @@ namespace Andromeda.Framing
                 : sendAll();
 
             async PooledValueTask sendAll() {
+                var writtenCount = 0;
                 try {
-                    await foreach (var frame in frames.WithCancellation(_token))
+                    await foreach (var frame in frames.WithCancellation(_token)) {
                         await _metadataEncoder.WriteFrameAsync(writer, frame, _token)
                             .ConfigureAwait(false);
+                        writtenCount++;
+                    }
                 }
-                finally { _singleWriter.Release(); }
+                finally { Release(writtenCount); }
             }
             async PooledValueTask sendAllSlow() {
                 await _singleWriter.WaitAsync(_token).ConfigureAwait(false);
                 await sendAll().ConfigureAwait(false);
             }
+        }
+
+        protected virtual void Release(int framesWritten = 1) {
+            _framesWritten += framesWritten;
+            _singleWriter.Release();
         }
 
         protected bool Close(Exception ex = null)
@@ -104,6 +119,10 @@ namespace Andromeda.Framing
             return true;
         }
 
-        public virtual void Dispose() => Close();
+        public virtual void Dispose()
+        {
+            Close();
+            _singleWriter.Dispose();
+        }
     }
 }

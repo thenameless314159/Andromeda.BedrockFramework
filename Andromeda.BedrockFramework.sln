@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Andromeda.Framing", "src\An
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Andromeda.Framing.Tests", "tests\Andromeda.Framing.Tests\Andromeda.Framing.Tests.csproj", "{5D4A2AAD-7154-4DC9-91DC-2028ADDFA44F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Andromeda.Framing.Extensions", "src\Andromeda.Framing.Extensions\Andromeda.Framing.Extensions.csproj", "{582CA1F3-EF6B-4399-A046-E906C6E9134A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{5D4A2AAD-7154-4DC9-91DC-2028ADDFA44F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D4A2AAD-7154-4DC9-91DC-2028ADDFA44F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D4A2AAD-7154-4DC9-91DC-2028ADDFA44F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{582CA1F3-EF6B-4399-A046-E906C6E9134A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{582CA1F3-EF6B-4399-A046-E906C6E9134A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{582CA1F3-EF6B-4399-A046-E906C6E9134A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{582CA1F3-EF6B-4399-A046-E906C6E9134A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{4F57BB19-5F1A-4828-8B27-C55FADBDC5C5} = {BE56BD3F-A489-42F7-A3E3-93AE5A0A54E2}
 		{8D0AB70E-A63A-4BC1-84A7-F68BA2103A69} = {BE56BD3F-A489-42F7-A3E3-93AE5A0A54E2}
 		{5D4A2AAD-7154-4DC9-91DC-2028ADDFA44F} = {1F47B42E-790F-48AA-8BFB-AD1986D05A67}
+		{582CA1F3-EF6B-4399-A046-E906C6E9134A} = {BE56BD3F-A489-42F7-A3E3-93AE5A0A54E2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05222274-E7CB-4ABA-9ADF-4A3DBB1D0417}

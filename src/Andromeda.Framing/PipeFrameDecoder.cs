@@ -13,6 +13,13 @@ namespace Andromeda.Framing
     {
         private readonly IMetadataDecoder _decoder;
         private PipeReader _reader;
+        private long _framesRead;
+        
+        public long FramesRead
+        {
+            get => Interlocked.Read(ref _framesRead);
+            protected set => Interlocked.Exchange(ref _framesRead, value);
+        }
 
         public PipeFrameDecoder(IMetadataDecoder decoder, PipeReader reader)
         {
@@ -29,6 +36,7 @@ namespace Andromeda.Framing
             {
                 holder.Buffer = buffer;
                 foreach (var frame in _decoder.GetFramesOf(holder, token)) {
+                    Interlocked.Increment(ref _framesRead);
                     yield return frame;
                 }
 
