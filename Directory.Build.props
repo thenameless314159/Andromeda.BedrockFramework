@@ -3,9 +3,9 @@
   <PropertyGroup>
     <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
     <NoWarn>$(NoWarn);NU5105</NoWarn>
-    <RepositoryUrl>https://github.com/thenameless314159/BedrockFramework</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/thenameless314159/BedrockFramework</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/thenameless314159/BedrockFramework/releases</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/thenameless314159/Andromeda.BedrockFramework</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/thenameless314159/Andromeda.BedrockFramework</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/thenameless314159/Andromeda.BedrockFramework/releases</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
     <PackageTags>cloud microservice networking sockets tcp framing</PackageTags>

@@ -8,4 +8,4 @@ as part of [Microsoft.AspNetCore.Connections.Abstractions](https://www.nuget.org
 
 See the presentation [here](https://speakerdeck.com/davidfowl/project-bedrock)
 
-#WIP
+# WIP
