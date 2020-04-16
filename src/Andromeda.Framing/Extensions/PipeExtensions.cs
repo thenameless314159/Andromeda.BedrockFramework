@@ -89,7 +89,6 @@ namespace Andromeda.Framing.Extensions
         private static ReadResult CreateEmptyResult(CancellationToken t) =>
                 new ReadResult(ReadOnlySequence<byte>.Empty, t.IsCancellationRequested, true);
 
-
         private const int _chunkSize = 1024 * 8;
     }
 }
