@@ -9,7 +9,7 @@ using PooledAwait;
 
 namespace Andromeda.Framing
 {
-    internal class PipeFrameEncoder : IFrameEncoder, IDisposable
+    internal class PipeFrameEncoder : IFrameEncoder
     {
         private readonly IMetadataEncoder _metadataEncoder;
         private readonly SemaphoreSlim _singleWriter;

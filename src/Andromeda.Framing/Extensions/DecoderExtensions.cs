@@ -7,7 +7,7 @@ using System.Threading;
 using Andromeda.Framing.Memory;
 using Andromeda.Framing.Metadata;
 
-namespace Andromeda.Framing.Extensions
+namespace Andromeda.Framing
 {
     public static class DecoderExtensions
     {

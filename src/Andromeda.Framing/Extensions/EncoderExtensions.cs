@@ -3,9 +3,10 @@ using System.IO.Pipelines;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Andromeda.Framing.Extensions;
 using Andromeda.Framing.Metadata;
 
-namespace Andromeda.Framing.Extensions
+namespace Andromeda.Framing
 {
     public static class EncoderExtensions
     {
