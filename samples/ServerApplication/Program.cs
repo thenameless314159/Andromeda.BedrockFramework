@@ -2,19 +2,16 @@ using System;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Bedrock.Framework;
-using Microsoft.AspNetCore.Connections;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace ServerApplication
 {
     public partial class Program
     {
-        public static async Task Main(string[] args)
+        public static Task Main(string[] args)
         {
-            // Manual wire up of the server
+            return Task.CompletedTask;
+            /*// Manual wire up of the server
             var services = new ServiceCollection();
             services.AddLogging(builder =>
             {
@@ -74,7 +71,7 @@ namespace ServerApplication
             Console.CancelKeyPress += (sender, e) => tcs.TrySetResult(null);
             await tcs.Task;
 
-            await server.StopAsync();
+            await server.StopAsync();*/
         }
     }
 }

@@ -6,15 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\Certs\testcert.pfx" Link="testcert.pfx" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MQTTnet.AspNetCore" Version="3.0.8" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Bedrock.Framework.Experimental\Bedrock.Framework.Experimental.csproj" />
   </ItemGroup>
 
 </Project>

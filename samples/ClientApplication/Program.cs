@@ -7,25 +7,18 @@ using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using Bedrock.Framework;
-using Bedrock.Framework.Experimental.Protocols.RabbitMQ;
-using Bedrock.Framework.Experimental.Protocols.Memcached;
-using Bedrock.Framework.Protocols;
-using Bedrock.Framework.Transports.Memory;
-using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Protocols;
-using Bedrock.Framework.Experimental.Protocols.RabbitMQ.Methods;
 
 namespace ClientApplication
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static Task Main(string[] args)
         {
-            var serviceProvider = new ServiceCollection().AddLogging(builder =>
+            return Task.CompletedTask;
+            /*var serviceProvider = new ServiceCollection().AddLogging(builder =>
             {
                 builder.SetMinimumLevel(LogLevel.Debug);
                 builder.AddConsole();
@@ -92,10 +85,10 @@ namespace ClientApplication
                     await RabbitMQProtocol(serviceProvider);
                 }
                 await RabbitMQProtocol(serviceProvider);
-            }
+            }*/
         }
 
-        private static async Task RabbitMQProtocol(IServiceProvider serviceProvider)
+       /*private static async Task RabbitMQProtocol(IServiceProvider serviceProvider)
         {
             var loggerFactory = LoggerFactory.Create(builder =>
             {
@@ -391,7 +384,7 @@ namespace ClientApplication
 
                 Console.WriteLine();
             }
-        }
+        }*/
     }
 
     // Property bag needed on ConnectAsync and BindAsync
