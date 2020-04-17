@@ -15,11 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1F47B42E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Andromeda.Bedrock.Framework", "src\Andromeda.Bedrock.Framework\Andromeda.Bedrock.Framework.csproj", "{4F57BB19-5F1A-4828-8B27-C55FADBDC5C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Andromeda.Framing", "src\Andromeda.Framing\Andromeda.Framing.csproj", "{8D0AB70E-A63A-4BC1-84A7-F68BA2103A69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Andromeda.Framing", "src\Andromeda.Framing\Andromeda.Framing.csproj", "{8D0AB70E-A63A-4BC1-84A7-F68BA2103A69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Andromeda.Framing.Tests", "tests\Andromeda.Framing.Tests\Andromeda.Framing.Tests.csproj", "{5D4A2AAD-7154-4DC9-91DC-2028ADDFA44F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Andromeda.Framing.Tests", "tests\Andromeda.Framing.Tests\Andromeda.Framing.Tests.csproj", "{5D4A2AAD-7154-4DC9-91DC-2028ADDFA44F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Andromeda.Framing.Extensions", "src\Andromeda.Framing.Extensions\Andromeda.Framing.Extensions.csproj", "{582CA1F3-EF6B-4399-A046-E906C6E9134A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Andromeda.Framing.Extensions", "src\Andromeda.Framing.Extensions\Andromeda.Framing.Extensions.csproj", "{582CA1F3-EF6B-4399-A046-E906C6E9134A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Andromeda.Framing.Extensions.Tests", "tests\Andromeda.Framing.Extensions.Tests\Andromeda.Framing.Extensions.Tests.csproj", "{0F01812E-6E16-4C96-BDB6-BDEA9D6BEFE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{582CA1F3-EF6B-4399-A046-E906C6E9134A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{582CA1F3-EF6B-4399-A046-E906C6E9134A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{582CA1F3-EF6B-4399-A046-E906C6E9134A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F01812E-6E16-4C96-BDB6-BDEA9D6BEFE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F01812E-6E16-4C96-BDB6-BDEA9D6BEFE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F01812E-6E16-4C96-BDB6-BDEA9D6BEFE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F01812E-6E16-4C96-BDB6-BDEA9D6BEFE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{8D0AB70E-A63A-4BC1-84A7-F68BA2103A69} = {BE56BD3F-A489-42F7-A3E3-93AE5A0A54E2}
 		{5D4A2AAD-7154-4DC9-91DC-2028ADDFA44F} = {1F47B42E-790F-48AA-8BFB-AD1986D05A67}
 		{582CA1F3-EF6B-4399-A046-E906C6E9134A} = {BE56BD3F-A489-42F7-A3E3-93AE5A0A54E2}
+		{0F01812E-6E16-4C96-BDB6-BDEA9D6BEFE1} = {1F47B42E-790F-48AA-8BFB-AD1986D05A67}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05222274-E7CB-4ABA-9ADF-4A3DBB1D0417}

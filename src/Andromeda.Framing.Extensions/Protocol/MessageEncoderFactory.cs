@@ -1,7 +1,8 @@
 ﻿using Andromeda.Framing.Metadata;
+using Andromeda.Framing.Protocol;
 using Microsoft.AspNetCore.Connections;
 
-namespace Andromeda.Framing.Protocol
+namespace Andromeda.Framing
 {
     public class MessageEncoderFactory : IFrameEncoderFactory
     {

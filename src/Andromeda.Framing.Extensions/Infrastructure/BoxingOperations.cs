@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Andromeda.Framing.Extensions.Infrastructure
+﻿namespace Andromeda.Framing.Extensions.Infrastructure
 {
     internal static class BoxingOperations
     {

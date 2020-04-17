@@ -3,9 +3,10 @@ using System.IO.Pipelines;
 using System.Threading;
 using System.Threading.Tasks;
 using Andromeda.Framing.Metadata;
+using Andromeda.Framing.Protocol;
 using PooledAwait;
 
-namespace Andromeda.Framing.Protocol
+namespace Andromeda.Framing
 {
     internal class PipeMessageEncoder : PipeFrameEncoder, IMessageEncoder
     {

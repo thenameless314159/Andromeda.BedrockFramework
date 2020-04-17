@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Andromeda.Framing.Behaviors;
-using Andromeda.Framing.Extensions.Behaviors;
 using Andromeda.Framing.Extensions.Infrastructure;
 using Andromeda.Framing.Metadata;
 using Andromeda.Framing.Protocol;

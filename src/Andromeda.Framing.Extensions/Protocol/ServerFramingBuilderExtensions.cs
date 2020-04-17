@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Andromeda.Framing.Protocol;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Andromeda.Framing.Protocol
+namespace Andromeda.Framing
 {
     public static class ServerFramingBuilderExtensions
     {

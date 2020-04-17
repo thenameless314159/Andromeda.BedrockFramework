@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Andromeda.Framing.Behaviors;
 using Andromeda.Framing.Metadata;
 using Andromeda.Framing.Protocol;
 using Microsoft.Extensions.DependencyInjection;
 using PooledAwait;
 
-namespace Andromeda.Framing.Extensions.Behaviors
+namespace Andromeda.Framing.Behaviors
 {
     internal class FrameDispatcher : IFrameDispatcher
     {

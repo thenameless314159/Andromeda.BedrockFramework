@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using Andromeda.Framing.Behaviors;
 using Andromeda.Framing.Extensions.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Andromeda.Framing.Extensions.Behaviors
+namespace Andromeda.Framing.Behaviors
 {
     public static class ServiceCollectionExtensions
     {
