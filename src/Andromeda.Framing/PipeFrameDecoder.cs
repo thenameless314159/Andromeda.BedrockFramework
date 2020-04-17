@@ -12,7 +12,7 @@ namespace Andromeda.Framing
     internal class PipeFrameDecoder : IFrameDecoder
     {
         private readonly IMetadataDecoder _decoder;
-        private PipeReader _reader;
+        protected PipeReader _reader;
         private long _framesRead;
         
         public long FramesRead
