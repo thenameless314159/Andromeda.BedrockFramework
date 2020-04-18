@@ -24,7 +24,7 @@ namespace Andromeda.Framing.Behaviors
         public ValueTask<DispatchResult> OnFrameReceivedAsync(in Frame frame, HandlerContext context)
         {
             if (!(frame.Metadata is MessageMetadataWithId metadata))
-                return new ValueTask<DispatchResult>(DispatchResult.InvalidFrame);
+                throw new InvalidOperationException($"{nameof(frame.Metadata)} must be of type {nameof(MessageMetadataWithId)} !");
 
             return !_handlers.TryGetValue(metadata.MessageId, out var handler)
                 ? new ValueTask<DispatchResult>(DispatchResult.HandlerNotMapped)
