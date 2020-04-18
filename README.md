@@ -28,7 +28,7 @@ public class ServerConnectionHandler : ConnectionHandler
 
     public override async Task OnConnectedAsync(ConnectionContext connection)
     {
-		var token = connection.ConnectionClosed;
+	var token = connection.ConnectionClosed;
         var decoder = _parser.AsFrameDecoder(connection.Transport.Input);
         var encoder = _parser.AsFrameEncoder(connection.Transport.Output, token);
 
@@ -43,5 +43,6 @@ public class ServerConnectionHandler : ConnectionHandler
 }
 ```
 
+## Andromeda.Framing.Extensions
 
-
+Provides a base protocol/messaging layer with implementable dispatching behaviors. Also provides pooled encoder/decoder implementations and registration/build logic. You can look at the samples and unit tests for more infos until I wrote this part of the doc.
