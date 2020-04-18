@@ -29,8 +29,8 @@ public class ServerConnectionHandler : ConnectionHandler
     public override async Task OnConnectedAsync(ConnectionContext connection)
     {
 	var token = connection.ConnectionClosed;
-        var decoder = _parser.AsFrameDecoder(connection.Transport.Input);
-        var encoder = _parser.AsFrameEncoder(connection.Transport.Output, token);
+        using var decoder = _parser.AsFrameDecoder(connection.Transport.Input);
+        using var encoder = _parser.AsFrameEncoder(connection.Transport.Output, token);
 
         await foreach (var frame in decoder.ReadFramesAsync(token))
         {
