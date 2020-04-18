@@ -1,0 +1,14 @@
+language: csharp
+mono: none
+dist: xenial
+dotnet: 3.1
+global:
+- DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
+- DOTNET_CLI_TELEMETRY_OPTOUT=true
+
+install:
+  - dotnet restore
+script:
+  - dotnet build
+  - dotnet test tests/Andromeda.Framing.Tests/Andromeda.Framing.Tests.csproj
+  - dotnet test tests/Andromeda.Framing.Extensions.Tests/Andromeda.Framing.Extensions.Tests.csproj
