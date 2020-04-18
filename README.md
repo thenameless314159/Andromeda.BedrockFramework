@@ -14,7 +14,7 @@ For further infos of the original project, see the presentation [here](https://s
 Standalone assembly that contains generic and extandable APIs to handle the frame encoding/decoding logic. In networking, a frame is a unit of data that helps to identify data packets, here they are represented by
 [**a sealed class**](https://github.com/thenameless314159/Andromeda.BedrockFramework/blob/master/src/Andromeda.Framing/Frame.cs)  which contains 2 read only properties : [`IMessageMetadata`](https://github.com/thenameless314159/Andromeda.BedrockFramework/blob/master/src/Andromeda.Framing/Metadata/IMessageMetadata.cs) and a `ReadOnlySequence<byte>` representing the payload of the current frame and delimited by the length parsed from the `IMessageMetadata`.
 
-The main features of this project are provided within the [`IFrameDecoder`](https://github.com/thenameless314159/Andromeda.BedrockFramework/blob/master/src/Andromeda.Framing/IFrameDecoder.cs) and [`IFrameEncoder`](https://github.com/thenameless314159/Andromeda.BedrockFramework/blob/master/src/Andromeda.Framing/IFrameEncoder.cs) interfaces which are available once you have **implemented your metadata parsing logic**  using the [`MetadataParser<T>`](https://github.com/thenameless314159/Andromeda.BedrockFramework/blob/master/src/Andromeda.Framing/Metadata/MetadataParser.cs) abstract class. Here is an usage example on a hypothetic `ConnectionHandler` :
+The main features of this project are provided within the [`IFrameDecoder`](https://github.com/thenameless314159/Andromeda.BedrockFramework/blob/master/src/Andromeda.Framing/IFrameDecoder.cs) and [`IFrameEncoder`](https://github.com/thenameless314159/Andromeda.BedrockFramework/blob/master/src/Andromeda.Framing/IFrameEncoder.cs) interfaces which are available once you have **implemented your metadata parsing logic**  using the [`MetadataParser<T>`](https://github.com/thenameless314159/Andromeda.BedrockFramework/blob/master/src/Andromeda.Framing/Metadata/MetadataParser.cs) abstract class. Here is an usage example on a hypothetic [`ConnectionHandler`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.connections.connectionhandler?view=aspnetcore-3.1) :
 
 
 ```csharp
@@ -24,13 +24,13 @@ using Andromeda.Framing.Metadata;
 public class ServerConnectionHandler : ConnectionHandler
 {
     public ServerConnectionHandler(IMetadataParser parser) => _parser = parser;
-	private readonly IMetadataParser _parser;
+    private readonly IMetadataParser _parser;
 
     public override async Task OnConnectedAsync(ConnectionContext connection)
     {
         var decoder = _parser.AsFrameDecoder(connection.Transport.Input);
         var encoder = _parser.AsFrameEncoder(connection.Transport.Output);
-        await foreach (var frame in decoder.ReadFramesAsync(source.Token))
+        await foreach (var frame in decoder.ReadFramesAsync(connection.ConnectionClosed))
         {
             var metadata = frame.Metadata as MyMessageMetadata ?? throw new ArgumentException();
             if(metadata.MessageId == 1)
@@ -40,4 +40,6 @@ public class ServerConnectionHandler : ConnectionHandler
     }
 }
 ```
+
+
 
