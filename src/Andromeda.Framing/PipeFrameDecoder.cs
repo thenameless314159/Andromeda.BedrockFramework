@@ -9,7 +9,7 @@ using Andromeda.Framing.Metadata;
 
 namespace Andromeda.Framing
 {
-    internal class PipeFrameDecoder : IFrameDecoder
+    public class PipeFrameDecoder : IFrameDecoder
     {
         private readonly IMetadataDecoder _decoder;
         protected PipeReader _reader;
