@@ -14,10 +14,10 @@ namespace Andromeda.Framing
             where TMeta : MessageMetadataWithId
         {
             var parser = new TParser();
-            return services.Add<TParser, TMeta>(parser);
+            return services.AddMetadataParser<TParser, TMeta>(parser);
         }
         
-        public static IServiceCollection Add<TParser, TMeta>(this IServiceCollection services, TParser parser)
+        public static IServiceCollection AddMetadataParser<TParser, TMeta>(this IServiceCollection services, TParser parser)
             where TParser : MetadataParserWithId<TMeta>
             where TMeta : MessageMetadataWithId
         {

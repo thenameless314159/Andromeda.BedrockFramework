@@ -25,7 +25,7 @@ namespace Andromeda.Framing
                 if (!decoder.TryParse(ref reader, out var metadata)) break;
                 if (metadata.Length < 0) throw new ArgumentOutOfRangeException(
                     nameof(metadata.Length), string.Format(_error, metadata));
-
+                
                 if (reader.Remaining < metadata.Length) break;
                 var payload = buffer.Slice(reader.Position, metadata.Length);
                 yield return new Frame(payload, metadata);

@@ -1,17 +1,23 @@
 using System;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Threading.Tasks;
+using Andromeda.Bedrock.Framework;
+using Andromeda.Framing;
+using Andromeda.Framing.Behaviors;
+using Microsoft.AspNetCore.Connections;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Protocol;
+using Protocol.Models;
 
 namespace ServerApplication
 {
-    public partial class Program
+    internal class Program
     {
-        public static Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            return Task.CompletedTask;
-            /*// Manual wire up of the server
+            // Manual wire up of the server
             var services = new ServiceCollection();
             services.AddLogging(builder =>
             {
@@ -19,59 +25,89 @@ namespace ServerApplication
                 builder.AddConsole();
             });
 
-            services.AddSignalR();
+            services.AddScoped<MessageHandler<HelloServerMessage>, HelloServerMessageHandler>();
+            services.Add<MessageMetadataParser, MessageMetadata>();
+            services.AddSingleton(sp =>
+            {
+                var behaviors = new BehaviorsBuilder();
+                behaviors.Configure<HelloServerMessageHandler, HelloServerMessage>(HelloServerMessage.Id);
+
+                var builder = new ServerFramingBuilder(sp, behaviors);
+                builder.MessageWriter = new MessageWriter(builder.Parser);
+                builder.MessageReader = new MessageReader();
+                builder.UseMessageEncoder();
+
+                return builder.Build();
+            });
 
             var serviceProvider = services.BuildServiceProvider();
 
             var server = new ServerBuilder(serviceProvider)
-                        .UseSockets(sockets =>
-                        {
-                            // Echo server
-                            sockets.ListenLocalhost(5000,
-                                builder => builder.UseConnectionLogging().UseConnectionHandler<EchoServerApplication>());
-
-                            // HTTP/1.1 server
-                            sockets.Listen(IPAddress.Loopback, 5001,
-                                builder => builder.UseConnectionLogging().UseConnectionHandler<HttpApplication>());
-
-                            // SignalR Hub
-                            sockets.Listen(IPAddress.Loopback, 5002,
-                                builder => builder.UseConnectionLogging().UseHub<Chat>());
-
-                            // MQTT application
-                            sockets.Listen(IPAddress.Loopback, 5003,
-                                builder => builder.UseConnectionLogging().UseConnectionHandler<MqttApplication>());
-
-                            // Echo Server with TLS
-                            sockets.Listen(IPAddress.Loopback, 5004,
-                                builder => builder.UseServerTls(options =>
-                                {
-                                    options.LocalCertificate = new X509Certificate2("testcert.pfx", "testcert");
-
-                                    // NOTE: Do not do this in a production environment
-                                    options.AllowAnyRemoteCertificate();
-                                })
-                                .UseConnectionLogging().UseConnectionHandler<EchoServerApplication>());
-
-                            sockets.Listen(IPAddress.Loopback, 5005,
-                                builder => builder.UseConnectionLogging().UseConnectionHandler<MyCustomProtocol>());
-                        })
+                        .UseSockets(sockets => sockets.Listen(IPAddress.Loopback, 5000,
+                            builder => builder.UseConnectionHandler<ServerConnectionHandler>()))
                         .Build();
 
             var logger = serviceProvider.GetRequiredService<ILoggerFactory>().CreateLogger<Program>();
-
             await server.StartAsync();
 
             foreach (var ep in server.EndPoints)
-            {
                 logger.LogInformation("Listening on {EndPoint}", ep);
-            }
 
             var tcs = new TaskCompletionSource<object>();
             Console.CancelKeyPress += (sender, e) => tcs.TrySetResult(null);
-            await tcs.Task;
 
-            await server.StopAsync();*/
+            await tcs.Task;
+            await server.StopAsync();
+        }
+    }
+
+    public class HelloServerMessageHandler : MessageHandler<HelloServerMessage>
+    {
+        public HelloServerMessageHandler(ILogger<HelloServerMessageHandler> logger) => _logger = logger;
+        private readonly ILogger<HelloServerMessageHandler> _logger;
+
+        protected override ValueTask<IHandlerAction> ExecuteActionOnReceivedAsync(CancellationToken token = default)
+        {
+            _logger.LogInformation($"Connection with id='{HandlerContext.Connection.ConnectionId}' sent response : {Message.Response}");
+            return new ValueTask<IHandlerAction>(Abort());
+        }
+    }
+
+    internal class ServerConnectionHandler : ConnectionHandler
+    {
+        private static readonly HandshakeMessage _handshakeMessage = new HandshakeMessage { Message = "Hello there !"};
+        private readonly ILogger<ServerConnectionHandler> _logger;
+        private readonly ServerFraming _framing;
+
+        public ServerConnectionHandler(ILogger<ServerConnectionHandler> logger, ServerFraming framing)
+        {
+            _framing = framing;
+            _logger = logger;
+        }
+
+        public override async Task OnConnectedAsync(ConnectionContext connection)
+        {
+            _logger.LogInformation($"New connection with id='{connection.ConnectionId}' !");
+            var (decoder, encoder) = _framing.CreatePair(connection); 
+            var proxy = encoder as IMessageEncoder ?? throw new InvalidOperationException();
+            var context = new SenderContext(connection, proxy);
+
+            try {
+                await proxy.WriteAsync(_handshakeMessage).ConfigureAwait(false);
+                await foreach (var frame in decoder.ReadFramesAsync(connection.ConnectionClosed))
+                {
+                    _logger.LogDebug($"Connection with id = '{connection.ConnectionId}' sent a frame with : {frame.Metadata}");
+                    var dispatchResult = await _framing.Dispatcher.OnFrameReceivedAsync(in frame, context)
+                        .ConfigureAwait(false);
+
+                    if (dispatchResult != DispatchResult.Success) break;
+                }
+            }
+            finally {
+                _logger.LogInformation($"Connection with id='{connection.ConnectionId}' ended with framesRead: {decoder.FramesRead}, framesSent: {encoder.FramesWritten} !");
+                decoder.Dispose();
+                encoder.Dispose();
+            }
         }
     }
 }

@@ -39,8 +39,9 @@ namespace Andromeda.Framing.Extensions.Infrastructure
             var temp = t;
             while (temp.BaseType != null)
             {
+                yield return temp.BaseType;
                 temp = temp.BaseType;
-                yield return t;
+                
             }
         }
 

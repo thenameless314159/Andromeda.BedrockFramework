@@ -6,8 +6,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.0.0" />
-    <PackageReference Include="MQTTnet.AspNetCore" Version="3.0.8" />
+    <ProjectReference Include="..\..\src\Andromeda.Bedrock.Framework\Andromeda.Bedrock.Framework.csproj" />
+    <ProjectReference Include="..\Protocol\Protocol.csproj" />
   </ItemGroup>
 
 </Project>
