@@ -29,10 +29,8 @@ namespace ServerApplication
             services.Add<MessageMetadataParser, MessageMetadata>();
             services.AddSingleton(sp =>
             {
-                var behaviors = new BehaviorsBuilder();
-                behaviors.Configure<HelloServerMessageHandler, HelloServerMessage>(HelloServerMessage.Id);
-
-                var builder = new ServerFramingBuilder(sp, behaviors);
+                var builder = new ServerFramingBuilder(sp);
+                builder.Mappings.Add((HelloServerMessage.Id, typeof(HelloServerMessage)));
                 builder.MessageWriter = new MessageWriter(builder.Parser);
                 builder.MessageReader = new MessageReader();
                 builder.UseMessageEncoder();

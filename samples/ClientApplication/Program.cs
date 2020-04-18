@@ -30,10 +30,8 @@ namespace ClientApplication
             services.AddSingleton<ClientConnectionHandler>();
             services.AddSingleton(sp =>
             {
-                var behaviors = new BehaviorsBuilder();
-                behaviors.Configure<HandshakeMessageHandler, HandshakeMessage>(HandshakeMessage.Id);
-
-                var builder = new ServerFramingBuilder(sp, behaviors);
+                var builder = new ServerFramingBuilder(sp);
+                builder.Mappings.Add((HandshakeMessage.Id, typeof(HandshakeMessage)));
                 builder.MessageWriter = new MessageWriter(builder.Parser);
                 builder.MessageReader = new MessageReader();
                 builder.UseMessageEncoder();
