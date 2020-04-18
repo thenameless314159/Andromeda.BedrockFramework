@@ -5,7 +5,8 @@ namespace Andromeda.Framing.Behaviors
     public enum DispatchResult
     {
         Success,
-
+        Cancelled,
+        
         /// <summary>
         /// When couldn't read message from payload.
         /// </summary>

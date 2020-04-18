@@ -23,6 +23,7 @@ namespace Andromeda.Framing.Behaviors
 
         public ValueTask<DispatchResult> OnFrameReceivedAsync(in Frame frame, HandlerContext context)
         {
+            if (context == default) throw new ArgumentNullException(nameof(context));
             if (!(frame.Metadata is MessageMetadataWithId metadata))
                 throw new InvalidOperationException($"{nameof(frame.Metadata)} must be of type {nameof(MessageMetadataWithId)} !");
 
@@ -34,6 +35,9 @@ namespace Andromeda.Framing.Behaviors
         public void Map<TMessage>(int withId) where TMessage : new()
         {
             _handlers[withId] = onFrame;
+
+            // The handler should be to able to execute once if the message is valid even if the
+            // connection closed since a message handler can also perform db update, logging etc...
             async PooledValueTask<DispatchResult> onFrame(Frame frame, HandlerContext context)
             {
                 var payload = frame.Payload;
@@ -43,14 +47,20 @@ namespace Andromeda.Framing.Behaviors
 
                 using var scope = _provider.CreateScope();
                 var handler = scope.ServiceProvider.GetService<MessageHandler<TMessage>>();
-                if (handler == null) return DispatchResult.HandlerNotRegistered;
+                if (handler == default) return DispatchResult.HandlerNotRegistered;
                 handler.Setup(context, message);
 
                 if (!await handler.CanProcessAsync().ConfigureAwait(false)) return DispatchResult.PredicateFailed;
-                await foreach (var response in handler.OnMessageReceivedAsync(context.Connection.ConnectionClosed).ConfigureAwait(false))
-                    await response.ExecuteAsync(context).ConfigureAwait(false);
 
-                return DispatchResult.Success;
+                var token = context.Connection.ConnectionClosed;
+                await foreach (var response in handler.OnMessageReceivedAsync(token).ConfigureAwait(false)) {
+                    if (token.IsCancellationRequested) return DispatchResult.Cancelled; // if OnMessageReceivedAsync is overriden the first action will be out so this check is still needed
+                    await response.ExecuteAsync(context).ConfigureAwait(false);
+                }
+
+                return token.IsCancellationRequested 
+                    ? DispatchResult.Cancelled 
+                    : DispatchResult.Success;
             }
         }
     }

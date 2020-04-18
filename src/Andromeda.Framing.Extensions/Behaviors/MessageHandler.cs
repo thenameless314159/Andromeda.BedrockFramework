@@ -46,6 +46,11 @@ namespace Andromeda.Framing.Behaviors
         public virtual async IAsyncEnumerable<IHandlerAction> OnMessageReceivedAsync([EnumeratorCancellation]CancellationToken token = default)
         {
             var action = await ExecuteActionOnReceivedAsync(token);
+
+            // will moveNext on first iteration anyway, we don't want the action out if the cancellation
+            // is requested but we can still let the handler execute if it doesn't perform any network
+            // related action (such as logging, update database etc...)
+            if (token.IsCancellationRequested) yield break;
             if (action == default) yield break;
             yield return action;
         }
