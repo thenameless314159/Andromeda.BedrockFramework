@@ -1,4 +1,4 @@
-# <p align="center"> <img src="https://gamepedia.cursecdn.com/minecraft_fr_gamepedia/e/ee/Bedrock.png" width="32" height="32" style="margin-bottom:-5"> Andromeda.Bedrock.Framework - [![Build Status](https://travis-ci.com/thenameless314159/Andromeda.BedrockFramework.svg?branch=master)](https://travis-ci.com/thenameless314159/Andromeda.BedrockFramework) </p>
+# <p align="center"> <img src="https://gamepedia.cursecdn.com/minecraft_fr_gamepedia/e/ee/Bedrock.png" width="48" height="48" style="margin-bottom:-15"> Andromeda.Bedrock.Framework - [![Build Status](https://travis-ci.com/thenameless314159/Andromeda.BedrockFramework.svg?branch=master)](https://travis-ci.com/thenameless314159/Andromeda.BedrockFramework) </p>
 
 <div style="text-align:center"><p align="center"><img src="https://raw.githubusercontent.com/thenameless314159/Andromeda.ServiceRegistration/master/andromeda_icon2.png?token=AFMTCCLAUUAALOP5UR4TWWC6JQ6Y6" width="140" height="158"><img src="https://raw.githubusercontent.com/thenameless314159/Andromeda.ServiceRegistration/master/ASP.NET-Core-Logo_2colors_Square_RGB.png?token=AFMTCCNPNVM6MBG7AF6E75K6JQTHI" width="180" height="168"><img src="https://raw.githubusercontent.com/thenameless314159/Andromeda.ServiceRegistration/master/NET-Core-Logo_2colors_Square_RGB.png?token=AFMTCCNORD45RRHKSS456HK6JQTJU" width="180" height="168"></p></div>
 
@@ -9,4 +9,35 @@ This project is a fork of the [*Project Bedrock*](https://github.com/aspnet/AspN
 
 For further infos of the original project, see the presentation [here](https://speakerdeck.com/davidfowl/project-bedrock)
 
-# WIP
+## Andromeda.Framing
+
+Standalone assembly that contains generic and extandable APIs to handle the frame encoding/decoding logic. In networking, a frame is a unit of data that helps to identify data packets, here they are represented by
+[**a sealed class**](https://github.com/thenameless314159/Andromeda.BedrockFramework/blob/master/src/Andromeda.Framing/Frame.cs)  which contains 2 read only properties : [`IMessageMetadata`](https://github.com/thenameless314159/Andromeda.BedrockFramework/blob/master/src/Andromeda.Framing/Metadata/IMessageMetadata.cs) and a `ReadOnlySequence<byte>` representing the payload of the current frame and delimited by the length parsed from the `IMessageMetadata`.
+
+The main features of this project are provided within the [`IFrameDecoder`](https://github.com/thenameless314159/Andromeda.BedrockFramework/blob/master/src/Andromeda.Framing/IFrameDecoder.cs) and [`IFrameEncoder`](https://github.com/thenameless314159/Andromeda.BedrockFramework/blob/master/src/Andromeda.Framing/IFrameEncoder.cs) interfaces which are available once you have **implemented your metadata parsing logic**  using the [`MetadataParser<T>`](https://github.com/thenameless314159/Andromeda.BedrockFramework/blob/master/src/Andromeda.Framing/Metadata/MetadataParser.cs) abstract class. Here is an usage example on a hypothetic `ConnectionHandler` :
+
+
+```csharp
+using Andromeda.Framing;
+using Andromeda.Framing.Metadata;
+
+public class ServerConnectionHandler : ConnectionHandler
+{
+    public ServerConnectionHandler(IMetadataParser parser) => _parser = parser;
+	private readonly IMetadataParser _parser;
+
+    public override async Task OnConnectedAsync(ConnectionContext connection)
+    {
+        var decoder = _parser.AsFrameDecoder(connection.Transport.Input);
+        var encoder = _parser.AsFrameEncoder(connection.Transport.Output);
+        await foreach (var frame in decoder.ReadFramesAsync(source.Token))
+        {
+            var metadata = frame.Metadata as MyMessageMetadata ?? throw new ArgumentException();
+            if(metadata.MessageId == 1)
+                encoder.WriteAsync(new Frame(ReadOnlySequence<byte>.Empty, 
+                    new MyMessageMetadata(messageId: 2, length: 0)))
+        }
+    }
+}
+```
+
