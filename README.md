@@ -28,9 +28,11 @@ public class ServerConnectionHandler : ConnectionHandler
 
     public override async Task OnConnectedAsync(ConnectionContext connection)
     {
+		var token = connection.ConnectionClosed;
         var decoder = _parser.AsFrameDecoder(connection.Transport.Input);
-        var encoder = _parser.AsFrameEncoder(connection.Transport.Output);
-        await foreach (var frame in decoder.ReadFramesAsync(connection.ConnectionClosed))
+        var encoder = _parser.AsFrameEncoder(connection.Transport.Output, token);
+
+        await foreach (var frame in decoder.ReadFramesAsync(token))
         {
             var metadata = frame.Metadata as MyMessageMetadata ?? throw new ArgumentException();
             if(metadata.MessageId == 1)
