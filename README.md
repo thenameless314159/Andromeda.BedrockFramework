@@ -24,7 +24,7 @@ using Andromeda.Framing.Metadata;
 public class ServerConnectionHandler : ConnectionHandler
 {
     public ServerConnectionHandler(IMetadataParser parser) => _parser = parser;
-	private readonly IMetadataParser _parser;
+    private readonly IMetadataParser _parser;
 
     public override async Task OnConnectedAsync(ConnectionContext connection)
     {
