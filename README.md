@@ -9,11 +9,11 @@ This project is a fork of the [*Project Bedrock*](https://github.com/aspnet/AspN
 
 For further infos about the original project, see the presentation [here](https://speakerdeck.com/davidfowl/project-bedrock).
 
-[![NuGet Badge](https://buildstats.info/nuget/Andromeda.Bedrock.Framework)](https://www.nuget.org/packages/Andromeda.Bedrock.Framework/) - Andromeda.Bedrock.Framework
+[![NuGet Badge](https://buildstats.info/nuget/Andromeda.Bedrock.Framework)](https://www.nuget.org/packages/Andromeda.Bedrock.Framework/) - **Andromeda.Bedrock.Framework**
 
-[![NuGet Badge](https://buildstats.info/nuget/Andromeda.Framing.Extensions)](https://www.nuget.org/packages/Andromeda.Framing.Extensions/) - Andromeda.Framing.Extensions
+[![NuGet Badge](https://buildstats.info/nuget/Andromeda.Framing.Extensions)](https://www.nuget.org/packages/Andromeda.Framing.Extensions/) - **Andromeda.Framing.Extensions**
 
-[![NuGet Badge](https://buildstats.info/nuget/Andromeda.Framing)](https://www.nuget.org/packages/Andromeda.Framing/) - Andromeda.Framing
+[![NuGet Badge](https://buildstats.info/nuget/Andromeda.Framing)](https://www.nuget.org/packages/Andromeda.Framing/) - **Andromeda.Framing**
 
 ## Andromeda.Framing
 
@@ -49,6 +49,9 @@ public class ServerConnectionHandler : ConnectionHandler
 }
 ```
 
+Please note that the `IFrameEncoder` should be used as the main send mechanism for a connection since the `PipeWriter` calls aren't thread-safe.
+
 ## Andromeda.Framing.Extensions
 
 Provides a base protocol/messaging layer with implementable dispatching behaviors. Also provides pooled encoder/decoder implementations and registration/build logic. You can look at the samples and unit tests for more infos until I write this part of the doc.
+
