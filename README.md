@@ -7,7 +7,13 @@ This project is a fork of the [*Project Bedrock*](https://github.com/aspnet/AspN
 - No other protocol implementation, only the base socket layers with the same APIs
 - No more `IConnectionHeartbeatFeature` and `IConnectionCompleteFeature` in the server `ConnectionContext`
 
-For further infos about the original project, see the presentation [here](https://speakerdeck.com/davidfowl/project-bedrock)
+For further infos about the original project, see the presentation [here](https://speakerdeck.com/davidfowl/project-bedrock).
+
+[![NuGet Badge](https://buildstats.info/nuget/Andromeda.Bedrock.Framework)](https://www.nuget.org/packages/Andromeda.Bedrock.Framework/) - Andromeda.Bedrock.Framework
+
+[![NuGet Badge](https://buildstats.info/nuget/Andromeda.Framing.Extensions)](https://www.nuget.org/packages/Andromeda.Framing.Extensions/) - Andromeda.Framing.Extensions
+
+[![NuGet Badge](https://buildstats.info/nuget/Andromeda.Framing)](https://www.nuget.org/packages/Andromeda.Framing/) - Andromeda.Framing
 
 ## Andromeda.Framing
 
