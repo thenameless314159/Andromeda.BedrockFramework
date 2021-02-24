@@ -2,6 +2,8 @@
 
 <div style="text-align:center"><p align="center"><img src="https://raw.githubusercontent.com/thenameless314159/Andromeda.ServiceRegistration/master/andromeda_icon2.png?token=AFMTCCLAUUAALOP5UR4TWWC6JQ6Y6" width="140" height="158"><img src="https://raw.githubusercontent.com/thenameless314159/Andromeda.ServiceRegistration/master/ASP.NET-Core-Logo_2colors_Square_RGB.png?token=AFMTCCNPNVM6MBG7AF6E75K6JQTHI" width="180" height="168"><img src="https://raw.githubusercontent.com/thenameless314159/Andromeda.ServiceRegistration/master/NET-Core-Logo_2colors_Square_RGB.png?token=AFMTCCNORD45RRHKSS456HK6JQTJU" width="180" height="168"></p></div>
 
+# Warning: not supported anymore, please use [this instead](https://github.com/thenameless314159/Andromeda.Network).
+
 This project is a fork of the [*Project Bedrock*](https://github.com/aspnet/AspNetCore/issues/4772) which provides a **different protocol/messaging** logic and a **new framing layer** decoupled from the protocol logic. At this point, the project was only made to suits my needs, therefore the **BedrockFramework** layer has some differences with the original :
 
 - No other protocol implementation, only the base socket layers with the same APIs
